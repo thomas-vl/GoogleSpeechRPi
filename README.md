@@ -24,7 +24,7 @@ git submodule update --init
 cd WiringPi
 sudo ./build
 
-cd..
+cd ..
 swig3.0 -python wiringpi.i
 sudo python3 setup.py install
 ```
