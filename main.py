@@ -84,7 +84,6 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
     audio2send = []
     cur_data = ''  # current chunk  of audio data
     rel = RATE/CHUNK
-    print(SILENCE_LIMIT * rel)
     slid_win = deque(maxlen=math.floor(SILENCE_LIMIT * rel))
     #Prepend audio from 0.5 seconds before noise was detected
     prev_audio = deque(maxlen=math.floor(PREV_AUDIO * rel))
@@ -93,7 +92,7 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
     response = []
 
     while (num_phrases == -1 or n > 0):
-        cur_data = stream.read(CHUNK, exception_on_overflow=False)
+        cur_data = stream.read(CHUNK)
         slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
         #print slid_win[-1]
         if(sum([x > THRESHOLD for x in slid_win]) > 0):
@@ -102,15 +101,12 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
                 started = True
             audio2send.append(cur_data)
         elif (started is True):
+            stream.stop_stream()
             print ("Finished")
             # The limit was reached, finish capture and deliver.
             filename = save_speech(list(prev_audio) + audio2send, p)
             # Send file to Google and get response
-            r = stt_google_wav(filename)
-            if num_phrases == -1:
-                print ("Response", r)
-            else:
-                response.append(r)
+            stt_google_wav(filename)
             # Remove temp file. Comment line to review.
             os.remove(filename)
             # Reset all
@@ -119,12 +115,12 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
             prev_audio = deque(maxlen=math.floor(0.5 * rel))
             audio2send = []
             n -= 1
+            steam.start_stream()
             print ("Listening ...")
         else:
             prev_audio.append(cur_data)
 
     print ("* Done recording")
-    stream.close()
     p.terminate()
 
     return response
@@ -163,7 +159,6 @@ def stt_google_wav(audio_fname):
                 print('=' * 20)
                 print('transcript: ' + alternative.transcript)
                 print('confidence: ' + str(alternative.confidence))
-                return alternative.transcript
 
 
 if(__name__ == '__main__'):
