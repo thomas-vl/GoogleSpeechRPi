@@ -82,7 +82,7 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
     print(SILENCE_LIMIT * rel)
     slid_win = deque(maxlen=math.floor(SILENCE_LIMIT * rel))
     #Prepend audio from 0.5 seconds before noise was detected
-    prev_audio = deque(maxlen=PREV_AUDIO * rel)
+    prev_audio = deque(maxlen=math.floor(PREV_AUDIO * rel))
     started = False
     n = num_phrases
     response = []
