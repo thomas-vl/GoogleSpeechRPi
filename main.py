@@ -131,7 +131,7 @@ def save_speech(data, p):
 
     filename = 'output_'+str(int(time.time()))
     # writes data to WAV file
-    data = ''.join(data)
+    data = b''.join(data)
     wf = wave.open(filename + '.wav', 'wb')
     wf.setnchannels(1)
     wf.setsampwidth(p.get_sample_size(pyaudio.paInt16))
