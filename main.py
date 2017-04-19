@@ -20,7 +20,7 @@ wf.setframerate(RATE)
 
 
 def callback(data, frame_count, time_info, flag):
-    wf.writeframes(b''.data)
+    wf.writeframes(data)
     print(wf)
     return (data, pyaudio.paContinue)
 
