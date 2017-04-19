@@ -11,7 +11,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 16000
 
-wf = wave.open("", 'wb')
+wf = wave.open()
 wf.setnchannels(CHANNELS)
 wf.setsampwidth(p.get_sample_size(FORMAT))
 wf.setframerate(RATE)
