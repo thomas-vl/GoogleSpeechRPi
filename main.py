@@ -149,38 +149,16 @@ def stt_google_wav(audio_fname):
 
     print ("Sending ", audio_fname)
     #Convert to flac first
-    filename = audio_fname
-    del_flac = False
-    if 'flac' not in filename:
-        del_flac = True
-        print ("Converting to flac")
-        print (FLAC_CONV + filename)
-        os.system(FLAC_CONV + ' ' + filename)
-        filename = filename.split('.')[0] + '.flac'
-
-    f = open(filename, 'rb')
-    flac_cont = f.read()
-    f.close()
-
-    # Headers. A common Chromium (Linux) User-Agent
-    hrs = {"User-Agent": "Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7",
-           'Content-type': 'audio/x-flac; rate=16000'}
-
-    req = urllib2.Request(GOOGLE_SPEECH_URL, data=flac_cont, headers=hrs)
-    print ("Sending request to Google TTS")
-    #print "response", response
-    try:
-        p = urllib2.urlopen(req)
-        response = p.read()
-        res = eval(response)['hypotheses']
-    except:
-        print ("Couldn't parse service response")
-        res = None
-
-    if del_flac:
-        os.remove(filename)  # Remove temp file
-
-    return res
+=    with open(audio_fname, 'rb') as stream:
+        sample = client.sample(stream=stream,
+                               encoding=speech.Encoding.LINEAR16,
+                               sample_rate_hertz=16000)
+        results = sample.streaming_recognize(language_code='en-US')
+        for result in results:
+            for alternative in result.alternatives:
+                print('=' * 20)
+                print('transcript: ' + alternative.transcript)
+                print('confidence: ' + str(alternative.confidence))
 
 
 if(__name__ == '__main__'):
