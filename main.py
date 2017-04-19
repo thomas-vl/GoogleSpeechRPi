@@ -2,20 +2,21 @@ from google.cloud import speech
 import pyaudio
 
 client = speech.Client()
+CHUNK = 512
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 16000
 
 p = pyaudio.PyAudio()
 
-stream = p.open(format=FORMAT,channels=CHANNELS,rate=RATE,input=True,output=True)
-
-stream.start_stream()
+stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK)
 
 print("starting")
-
-stream.start_stream()
-while (True):
+while (True):    
     sample = client.sample(stream=stream,encoding=speech.Encoding.LINEAR16,sample_rate_hertz=16000)
     results = sample.streaming_recognize(language_code='en-US',single_utterance=True,)
     for result in results:
