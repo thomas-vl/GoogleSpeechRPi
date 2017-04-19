@@ -28,7 +28,7 @@ with pStream as stream:
             print('confidence: ' + str(alternative.confidence))
 
 print("closing stream")
-stream.stop_stream()
-stream.close()
+pStream.stop_stream()
+pStream.close()
 
 p.terminate()
