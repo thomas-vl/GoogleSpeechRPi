@@ -10,8 +10,6 @@ from google.cloud import speech
 
 
 client = speech.Client()
-
-
 LANG_CODE = 'en-US'  # Language to use
 
 
@@ -155,6 +153,11 @@ def stt_google_wav(audio_fname):
                 print('=' * 20)
                 print('transcript: ' + alternative.transcript)
                 print('confidence: ' + str(alternative.confidence))
+                if alternative.transcript == "light on":
+                    wiringpi.digitalWrite(4,1)
+                if alternative.transcript == "light off":
+                    wiringpi.digitalWrite(4,1)
+
 
 
 if(__name__ == '__main__'):
