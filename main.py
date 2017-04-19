@@ -93,7 +93,7 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
     response = []
 
     while (num_phrases == -1 or n > 0):
-        cur_data = stream.read(CHUNK)
+        cur_data = stream.read(CHUNK, exception_on_overflow = False)
         slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
         #print slid_win[-1]
         if(sum([x > THRESHOLD for x in slid_win]) > 0):
