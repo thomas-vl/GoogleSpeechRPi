@@ -1,11 +1,11 @@
 # GoogleSpeechRPi
 Use Google Cloud Speech to control Raspberry Pi 
 
-# Objective: 
+## Objective: 
 Control the GPIO Pins of a Raspberry Pi on the fly using Google Cloud Speech.
 
-# Install libraries:
-Versioned version of Google Cloud SDK:
+## Install libraries:
+Versioned version of [Google Cloud SDK](https://cloud.google.com/sdk/downloads#linux):
 ```
 export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
 echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -26,7 +26,7 @@ swig3.0 -python wiringpi.i
 sudo python3 setup.py install
 ```
 
-# Setup Google Cloud authentication
+## Setup Google Cloud authentication
 ```
 gcloud auth application-default login
 ```
