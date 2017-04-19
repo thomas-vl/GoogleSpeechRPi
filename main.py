@@ -19,7 +19,7 @@ FLAC_CONV = 'flac -f'  # We need a WAV to FLAC converter. flac is available
                        # on Linux
 
 # Microphone stream config.
-CHUNK = 8192  # CHUNKS of bytes to read each time from mic
+CHUNK = 1024  # CHUNKS of bytes to read each time from mic
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 16000
@@ -93,7 +93,7 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
     response = []
 
     while (num_phrases == -1 or n > 0):
-        cur_data = stream.read(CHUNK)
+        cur_data = stream.read(CHUNK, exception_on_overflow=False)
         slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
         #print slid_win[-1]
         if(sum([x > THRESHOLD for x in slid_win]) > 0):
