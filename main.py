@@ -21,7 +21,7 @@ wf.setframerate(RATE)
 
 def callback(data, frame_count, time_info, flag):
     wf.writeframes(data)
-    print(wf)
+
     return (data, pyaudio.paContinue)
 
 
@@ -35,7 +35,7 @@ stream = p.open(format=FORMAT,
 stream.start_stream()
 
 while stream.is_active():
-    time.sleep(0.1)
+    time.sleep(1)
 
 stream.stop_stream()
 stream.close()
