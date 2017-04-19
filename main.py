@@ -5,6 +5,11 @@ from collections import deque
 import os
 import time
 import math
+from google.cloud import speech
+
+
+client = speech.Client()
+
 
 LANG_CODE = 'en-US'  # Language to use
 
