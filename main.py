@@ -8,17 +8,14 @@ RATE = 16000
 
 p = pyaudio.PyAudio()
 
-pStream = p.open(format=FORMAT,
-                channels=CHANNELS,
-                rate=RATE,
-                input=True,
-                output=True)
+#pStream = p.open(format=FORMAT,channels=CHANNELS,rate=RATE,input=True,output=True)
 
 #pStream.start_stream()
 
 print("starting")
 
-with pStream.start_stream() as stream:
+with p.open(format=FORMAT,channels=CHANNELS,rate=RATE,input=True,output=True) as stream:
+    stream.start_stream()
     sample = client.sample(stream=stream,encoding=speech.Encoding.LINEAR16,sample_rate_hertz=16000)
     results = sample.streaming_recognize(language_code='en-US',single_utterance=True,)
     for result in results:
