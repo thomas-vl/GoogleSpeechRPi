@@ -39,7 +39,7 @@ def audio_int(num_samples=50):
         is the avg of the 20% largest intensities recorded.
     """
 
-    print "Getting intensity values from mic."
+    print ("Getting intensity values from mic.")
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT,
@@ -52,8 +52,8 @@ def audio_int(num_samples=50):
               for x in range(num_samples)]
     values = sorted(values, reverse=True)
     r = sum(values[:int(num_samples * 0.2)]) / int(num_samples * 0.2)
-    print " Finished "
-    print " Average audio intensity is ", r
+    print (" Finished ")
+    print (" Average audio intensity is ", r)
     stream.close()
     p.terminate()
     return r
@@ -77,7 +77,7 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
                     input=True,
                     frames_per_buffer=CHUNK)
 
-    print "* Listening mic. "
+    print ("* Listening mic. ")
     audio2send = []
     cur_data = ''  # current chunk  of audio data
     rel = RATE/CHUNK
@@ -98,13 +98,13 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
                 started = True
             audio2send.append(cur_data)
         elif (started is True):
-            print "Finished"
+            print ("Finished")
             # The limit was reached, finish capture and deliver.
             filename = save_speech(list(prev_audio) + audio2send, p)
             # Send file to Google and get response
             r = stt_google_wav(filename)
             if num_phrases == -1:
-                print "Response", r
+                print ("Response", r)
             else:
                 response.append(r)
             # Remove temp file. Comment line to review.
@@ -115,11 +115,11 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
             prev_audio = deque(maxlen=0.5 * rel)
             audio2send = []
             n -= 1
-            print "Listening ..."
+            print ("Listening ...")
         else:
             prev_audio.append(cur_data)
 
-    print "* Done recording"
+    print ("* Done recording")
     stream.close()
     p.terminate()
 
@@ -147,14 +147,14 @@ def stt_google_wav(audio_fname):
         service and returns service's response. We need a FLAC
         converter if audio is not FLAC (check FLAC_CONV). """
 
-    print "Sending ", audio_fname
+    print ("Sending ", audio_fname)
     #Convert to flac first
     filename = audio_fname
     del_flac = False
     if 'flac' not in filename:
         del_flac = True
-        print "Converting to flac"
-        print FLAC_CONV + filename
+        print ("Converting to flac")
+        print (FLAC_CONV + filename)
         os.system(FLAC_CONV + ' ' + filename)
         filename = filename.split('.')[0] + '.flac'
 
@@ -167,14 +167,14 @@ def stt_google_wav(audio_fname):
            'Content-type': 'audio/x-flac; rate=16000'}
 
     req = urllib2.Request(GOOGLE_SPEECH_URL, data=flac_cont, headers=hrs)
-    print "Sending request to Google TTS"
+    print ("Sending request to Google TTS")
     #print "response", response
     try:
         p = urllib2.urlopen(req)
         response = p.read()
         res = eval(response)['hypotheses']
     except:
-        print "Couldn't parse service response"
+        print ("Couldn't parse service response")
         res = None
 
     if del_flac:
