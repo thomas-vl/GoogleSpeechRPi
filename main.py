@@ -163,6 +163,7 @@ def stt_google_wav(audio_fname):
                 print('=' * 20)
                 print('transcript: ' + alternative.transcript)
                 print('confidence: ' + str(alternative.confidence))
+                return alternative.transcript
 
 
 if(__name__ == '__main__'):
