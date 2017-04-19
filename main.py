@@ -115,8 +115,8 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
             os.remove(filename)
             # Reset all
             started = False
-            slid_win = deque(maxlen=SILENCE_LIMIT * rel)
-            prev_audio = deque(maxlen=0.5 * rel)
+            slid_win = deque(maxlen=math.floor(SILENCE_LIMIT * rel))
+            prev_audio = deque(maxlen=math.floor(0.5 * rel))
             audio2send = []
             n -= 1
             print ("Listening ...")
