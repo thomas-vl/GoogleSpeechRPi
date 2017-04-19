@@ -16,8 +16,7 @@ p = pyaudio.PyAudio()
 def callback(in_data, frame_count, time_info, flag):
     print(in_data)
     print(frame_count)
-    print(audio_data)
-    return (audio_data, pyaudio.paContinue)
+    return (in_data, pyaudio.paContinue)
 
 
 stream = p.open(format=FORMAT,
