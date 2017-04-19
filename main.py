@@ -149,7 +149,7 @@ def stt_google_wav(audio_fname):
 
     print ("Sending ", audio_fname)
     #Convert to flac first
-=    with open(audio_fname, 'rb') as stream:
+    with open(audio_fname, 'rb') as stream:
         sample = client.sample(stream=stream,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate_hertz=16000)
