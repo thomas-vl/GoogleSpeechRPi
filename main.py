@@ -2,13 +2,13 @@ from google.cloud import speech
 import pyaudio
 
 client = speech.Client()
-WIDTH = 2
-CHANNELS = 2
-RATE = 44100
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 16000
 
 p = pyaudio.PyAudio()
 
-pStream = p.open(format=p.get_format_from_width(WIDTH),
+pStream = p.open(format=FORMAT,
                 channels=CHANNELS,
                 rate=RATE,
                 input=True,
