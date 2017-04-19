@@ -161,6 +161,12 @@ def stt_google_wav(audio_fname):
 
 
 if(__name__ == '__main__'):
-    listen_for_speech()  # listen to mic.
-    #print stt_google_wav('hello.flac')  # translate audio file
-    #audio_int()  # To measure your mic levels
+    try:
+        wiringpi.wiringPiSetupGpio()
+    except:
+        print ("GPIO issue", sys.exc_info()[0])
+
+    wiringpi.pinMode(4,1)
+    wiringpi.digitalWrite(4,0)
+
+    listen_for_speech()
