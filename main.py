@@ -2,6 +2,7 @@ from google.cloud import speech
 import pyaudio
 import wave
 import sys
+import time
 
 
 client = speech.Client()
