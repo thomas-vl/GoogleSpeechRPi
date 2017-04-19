@@ -14,11 +14,11 @@ pStream = p.open(format=FORMAT,
                 input=True,
                 output=True)
 
-pStream.start_stream()
+#pStream.start_stream()
 
-print("start talking")
+print("starting")
 
-with pStream as stream:
+with pStream.start_stream() as stream:
     sample = client.sample(stream=stream,encoding=speech.Encoding.LINEAR16,sample_rate_hertz=16000)
     results = sample.streaming_recognize(language_code='en-US',single_utterance=True,)
     for result in results:
