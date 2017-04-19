@@ -155,9 +155,12 @@ def stt_google_wav(audio_fname):
                 print('confidence: ' + str(alternative.confidence))
                 if alternative.transcript == "light on":
                     wiringpi.digitalWrite(4,1)
-                if alternative.transcript == "light off":
+                if alternative.transcript == "lights on":
                     wiringpi.digitalWrite(4,1)
-
+                if alternative.transcript == "light off":
+                    wiringpi.digitalWrite(4,0)
+                if alternative.transcript == "lights off":
+                    wiringpi.digitalWrite(4,0)
 
 
 if(__name__ == '__main__'):
