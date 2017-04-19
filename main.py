@@ -14,15 +14,9 @@ RATE = 16000
 p = pyaudio.PyAudio()
 
 def callback(in_data, frame_count, time_info, flag):
-    sample = client.sample(stream=in_data,
-                           encoding=speech.Encoding.LINEAR16,
-                           sample_rate_hertz=16000)
-    results = sample.streaming_recognize(language_code='en-US')
-    for result in results:
-        for alternative in result.alternatives:
-            print('=' * 20)
-            print('transcript: ' + alternative.transcript)
-            print('confidence: ' + str(alternative.confidence))
+    print(in_data)
+    print(frame_count)
+    print(audio_data)
     return (audio_data, pyaudio.paContinue)
 
 
