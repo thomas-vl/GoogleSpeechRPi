@@ -13,15 +13,18 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 sudo apt-get update && sudo apt-get install google-cloud-sdk
 ```
 
-WiringPi
+[WiringPi-Python](https://github.com/WiringPi/WiringPi-Python):
 ```bash
+sudo apt-get install python3-dev python3-setuptools swig3.0
+
 git clone --recursive https://github.com/WiringPi/WiringPi-Python.git
 cd WiringPi-Python
 git submodule update --init
-sudo apt-get install python3-dev python3-setuptools swig3.0
+
 cd WiringPi
 sudo ./build
-Return to the root directory of the repository and:
+
+cd..
 swig3.0 -python wiringpi.i
 sudo python3 setup.py install
 ```
