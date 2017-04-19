@@ -11,12 +11,13 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 16000
 
+p = pyaudio.PyAudio()
+
 wf = wave.open('test','wb')
 wf.setnchannels(CHANNELS)
 wf.setsampwidth(p.get_sample_size(FORMAT))
 wf.setframerate(RATE)
 
-p = pyaudio.PyAudio()
 
 def callback(data, frame_count, time_info, flag):
     wf.writeframes(b''.data)
