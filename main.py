@@ -15,16 +15,17 @@ stream.start_stream()
 print("starting")
 
 stream.start_stream()
-sample = client.sample(stream=stream,encoding=speech.Encoding.LINEAR16,sample_rate_hertz=16000)
-results = sample.streaming_recognize(language_code='en-US',single_utterance=True,)
-for result in results:
-    for alternative in result.alternatives:
-        print('=' * 20)
-        print('transcript: ' + alternative.transcript)
-        print('confidence: ' + str(alternative.confidence))
+while (True):
+    sample = client.sample(stream=stream,encoding=speech.Encoding.LINEAR16,sample_rate_hertz=16000)
+    results = sample.streaming_recognize(language_code='en-US',single_utterance=True,)
+    for result in results:
+        for alternative in result.alternatives:
+            print('=' * 20)
+            print('transcript: ' + alternative.transcript)
+            print('confidence: ' + str(alternative.confidence))
 
 print("closing stream")
-pStream.stop_stream()
-pStream.close()
+stream.stop_stream()
+stream.close()
 
 p.terminate()
