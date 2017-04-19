@@ -94,7 +94,7 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
         #print slid_win[-1]
         if(sum([x > THRESHOLD for x in slid_win]) > 0):
             if(not started):
-                print "Starting record of phrase"
+                print ("Starting record of phrase")
                 started = True
             audio2send.append(cur_data)
         elif (started is True):
