@@ -1,3 +1,4 @@
+import wiringpi
 import pyaudio
 import wave
 import audioop
@@ -13,10 +14,6 @@ client = speech.Client()
 
 LANG_CODE = 'en-US'  # Language to use
 
-GOOGLE_SPEECH_URL = 'https://www.google.com/speech-api/v1/recognize?xjerr=1&client=chromium&pfilter=2&lang=%s&maxresults=6' % (LANG_CODE)
-
-FLAC_CONV = 'flac -f'  # We need a WAV to FLAC converter. flac is available
-                       # on Linux
 
 # Microphone stream config.
 CHUNK = 1024  # CHUNKS of bytes to read each time from mic
