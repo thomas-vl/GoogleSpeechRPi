@@ -115,14 +115,13 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
             prev_audio = deque(maxlen=math.floor(0.5 * rel))
             audio2send = []
             n -= 1
-            steam.start_stream()
+            stream.start_stream()
             print ("Listening ...")
         else:
             prev_audio.append(cur_data)
 
     print ("* Done recording")
     p.terminate()
-
     return response
 
 
