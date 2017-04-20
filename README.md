@@ -3,7 +3,7 @@ Use Google Cloud Speech to control Raspberry Pi
 
 ## Objective: 
 Control the GPIO Pins of a Raspberry Pi on the fly using Google Cloud Speech.
-I've chosen the most visible implmentation of GPIO Pin control, a Light Emitting Diode.
+I've chosen the most visible implementation of GPIO Pin control, a Light Emitting Diode.
 
 ## Install libraries:
 pip3:
@@ -61,6 +61,6 @@ One of the biggest problems i had was that the audio stream from pyAudio could n
 I know that most of the code is ugly please post anything you might feel I could improve.
 
 ## Credits
-A big thanks to [Jeyson Molina](https://github.com/jeysonmc) for providing a lot of code to calculate silence treshholds 
+A big thanks to [Jeyson Molina](https://github.com/jeysonmc) for providing a lot of code to calculate silence tresholds 
 
 
