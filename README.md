@@ -57,6 +57,7 @@ sudo python3 main.py
 ```
 
 ## Notes
+One of the biggest problems i had was that the audio stream from pyAudio could not be read by the Cloud-Speech client. I feel that Java might be better suited for this.
 I know that most of the code is ugly please post anything you might feel I could improve.
 
 ## Credits
