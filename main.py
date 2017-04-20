@@ -12,28 +12,16 @@ from google.cloud import speech
 client = speech.Client()
 LANG_CODE = 'en-US'  # Language to use
 
-
-# Microphone stream config.
 CHUNK = 1024  # CHUNKS of bytes to read each time from mic
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 16000
 THRESHOLD = 1500  # The threshold intensity that defines silence
-
 SILENCE_LIMIT = 2  # Silence limit in seconds to stop the recording
-
-PREV_AUDIO = 0.5  # Previous audio (in seconds) to prepend. When noise
-                  # is detected, how much of previously recorded audio is
-                  # prepended. This helps to prevent chopping the beggining
-                  # of the phrase.
+PREV_AUDIO = 0.5  #seconds of audo to prepend to the sending data
 
 
 def audio_int(num_samples=50):
-    """ Gets average audio intensity of your mic sound. You can use it to get
-        average intensities while you're talking and/or silent. The average
-        is the avg of the 20% largest intensities recorded.
-    """
-
     print ("Getting intensity values from mic.")
     p = pyaudio.PyAudio()
 
@@ -54,15 +42,7 @@ def audio_int(num_samples=50):
     return r
 
 
-def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
-    """
-    Listens to Microphone, extracts phrases from it and sends it to
-    Google's TTS service and returns response. a "phrase" is sound
-    surrounded by silence (according to threshold). num_phrases controls
-    how many phrases to process before finishing the listening process
-    (-1 for infinite).
-    """
-
+def listen_for_speech(threshold=THRESHOLD):
     #Open stream
     p = pyaudio.PyAudio()
 
@@ -80,10 +60,9 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
     #Prepend audio from 0.5 seconds before noise was detected
     prev_audio = deque(maxlen=math.floor(PREV_AUDIO * rel))
     started = False
-    n = num_phrases
     response = []
 
-    while (num_phrases == -1 or n > 0):
+    while (True):
         cur_data = stream.read(CHUNK)
         slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
         #print slid_win[-1]
@@ -95,10 +74,10 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
         elif (started is True):
             stream.stop_stream()
             print ("Finished")
-            # The limit was reached, finish capture and deliver.
             filename = save_speech(list(prev_audio) + audio2send, p)
-            # Send file to Google and get response
-            stt_google_wav(filename)
+            p = stt_google_wav(filename)
+            if p == "exit":
+                break
             # Remove temp file. Comment line to review.
             os.remove(filename)
             # Reset all
@@ -106,21 +85,17 @@ def listen_for_speech(threshold=THRESHOLD, num_phrases=-1):
             slid_win = deque(maxlen=math.floor(SILENCE_LIMIT * rel))
             prev_audio = deque(maxlen=math.floor(0.5 * rel))
             audio2send = []
-            n -= 1
             stream.start_stream()
             print ("Listening ...")
         else:
             prev_audio.append(cur_data)
 
-    print ("* Done recording")
+    print ("exiting")
     p.terminate()
-    return response
+    return
 
 
 def save_speech(data, p):
-    """ Saves mic data to temporary WAV file. Returns filename of saved
-        file """
-
     filename = 'output_'+str(int(time.time()))
     # writes data to WAV file
     data = b''.join(data)
@@ -150,6 +125,8 @@ def stt_google_wav(audio_fname):
                 print('=' * 20)
                 print('transcript: ' + alternative.transcript)
                 print('confidence: ' + str(alternative.confidence))
+                if alternative.transcript == "exit":
+                    return "exit"
                 if alternative.transcript == "light on":
                     wiringpi.digitalWrite(4,1)
                 if alternative.transcript == "lights on":
